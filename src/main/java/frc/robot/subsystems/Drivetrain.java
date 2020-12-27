@@ -31,8 +31,10 @@ public class Drivetrain extends SubsystemBase {
   
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
-  public Drivetrain() {
+  private final double init_position;
 
+  public Drivetrain() {
+    init_position = leftLead.getEncoder().getPosition();
     
   
   }
@@ -44,6 +46,10 @@ public class Drivetrain extends SubsystemBase {
   
   public void move(double forward, double turn) {
     m_drive.arcadeDrive(forward, turn);
+  }
+
+  public double getEncoderValue() {
+    return leftLead.getEncoder().getPosition() - init_position;
   }
 
 }

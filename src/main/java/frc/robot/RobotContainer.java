@@ -11,7 +11,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.BasicDrive;
+import frc.robot.commands.DriveBack;
+import frc.robot.commands.DriveForward;
+import frc.robot.commands.DriveSetDistance;
+import frc.robot.commands.TurnRight;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -32,6 +37,12 @@ public class RobotContainer {
 
   // Commands
   private final BasicDrive basicDrive;
+  private final DriveBack back = new DriveBack(m_drive, 0.3);
+  private final TurnRight trnDrive = new TurnRight(m_drive, 0.5);
+  private final DriveForward forwardDrive = new DriveForward(m_drive, 0.8);
+
+  //Auton Commands
+  private final DriveSetDistance setDrive = new DriveSetDistance(m_drive, 50);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -49,7 +60,14 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+  private JoystickButton driverA = new JoystickButton(dController, Constants.aButton);
+  private JoystickButton turnButton = new JoystickButton(dController, Constants.rightBumper);
+  private JoystickButton forwX = new JoystickButton(dController, Constants.xButton);
+
   private void configureButtonBindings() {
+    driverA.whenHeld(back);
+    turnButton.whenHeld(trnDrive);
+    forwX.whenHeld(forwardDrive);
   }
 
   /**
@@ -59,6 +77,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return setDrive;
   }
 }
