@@ -12,10 +12,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Auton1;
 import frc.robot.commands.BasicDrive;
 import frc.robot.commands.DriveBack;
 import frc.robot.commands.DriveForward;
-import frc.robot.commands.DriveSetDistance;
+import frc.robot.commands.HalfSpeedDrive;
 import frc.robot.commands.TurnRight;
 import frc.robot.subsystems.Drivetrain;
 
@@ -40,9 +41,8 @@ public class RobotContainer {
   private final DriveBack back = new DriveBack(m_drive, 0.3);
   private final TurnRight trnDrive = new TurnRight(m_drive, 0.5);
   private final DriveForward forwardDrive = new DriveForward(m_drive, 0.8);
-
-  //Auton Commands
-  private final DriveSetDistance setDrive = new DriveSetDistance(m_drive, 50);
+  private final Auton1 BobsAuton = new Auton1(m_drive);
+  private final HalfSpeedDrive JeffsDrive;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -50,8 +50,11 @@ public class RobotContainer {
   public RobotContainer() {
     basicDrive = new BasicDrive(m_drive, () -> dController.getY(Hand.kLeft), () -> dController.getX(Hand.kRight));
     m_drive.setDefaultCommand(basicDrive);
+
+    JeffsDrive = new HalfSpeedDrive(m_drive, () -> dController.getY(Hand.kLeft), () -> dController.getX(Hand.kRight));
     // Configure the button bindings
     configureButtonBindings();
+
   }
 
   /**
@@ -63,11 +66,13 @@ public class RobotContainer {
   private JoystickButton driverA = new JoystickButton(dController, Constants.aButton);
   private JoystickButton turnButton = new JoystickButton(dController, Constants.rightBumper);
   private JoystickButton forwX = new JoystickButton(dController, Constants.xButton);
+  private JoystickButton halfY = new JoystickButton(dController, Constants.yButton);
 
   private void configureButtonBindings() {
     driverA.whenHeld(back);
     turnButton.whenHeld(trnDrive);
     forwX.whenHeld(forwardDrive);
+    halfY.toggleWhenPressed(JeffsDrive);
   }
 
   /**
@@ -77,6 +82,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return setDrive;
+
+    return BobsAuton;
   }
 }

@@ -38,4 +38,7 @@ public final class Constants {
     public static int rightLead = 4;
     public static int rightFollower1 = 5;
     public static int rightFollower2 = 6; 
+
+    public static double encoderRotationsPer360DegreeRotation = 0;
+    
 }

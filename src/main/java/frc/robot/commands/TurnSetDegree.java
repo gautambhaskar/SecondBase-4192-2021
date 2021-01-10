@@ -9,37 +9,29 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class DriveSetDistance extends PIDCommand {
+public class TurnSetDegree extends PIDCommand {
   /**
-   * Creates a new DriveSetDistance.
+   * Creates a new TurnSetDegree.
    */
-
-
-  public DriveSetDistance(Drivetrain x_Drive, double distance) {
+  public TurnSetDegree(Drivetrain x_Drive, double degrees) {
     super(
         // The controller that the command will use
         new PIDController(0, 0, 0),
         // This should return the measurement
-        () -> x_Drive.getLeftEncoderPosition(),
+        () -> (x_Drive.getLeftEncoderPosition()-x_Drive.getRightEncoderPosition())/2,//might have to negate this expression
         // This should return the setpoint (can also be a constant)
-        () -> distance,
+        () -> degrees * Constants.encoderRotationsPer360DegreeRotation/360,
         // This uses the output
-        output -> { 
+        output -> {
+          x_Drive.move(0, output);
           // Use the output here
-          if (output > 0.5) {
-            x_Drive.move(0.5, 0);
-          } else if (output < -0.5) {
-            x_Drive.move(-0.5, 0);
-          } else {
-            x_Drive.move(output, 0);
-          }
         });
-    x_Drive.recalibrateEncoderPosition();
     addRequirements(x_Drive);
     getController().setTolerance(0.2);
     // Use addRequirements() here to declare subsystem dependencies.
