@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.Constants.drivePID;
 import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -19,29 +20,28 @@ public class DriveSetDistance extends PIDCommand {
    * Creates a new DriveSetDistance.
    */
 
-
   public DriveSetDistance(Drivetrain x_Drive, double distance) {
     super(
         // The controller that the command will use
-        new PIDController(0, 0, 0),
+        new PIDController(drivePID.kP, drivePID.kI, drivePID.kD),
         // This should return the measurement
         () -> x_Drive.getLeftEncoderPosition(),
         // This should return the setpoint (can also be a constant)
         () -> distance,
         // This uses the output
-        output -> { 
+        output -> {
           // Use the output here
-          if (output > 0.5) {
-            x_Drive.move(0.5, 0);
-          } else if (output < -0.5) {
-            x_Drive.move(-0.5, 0);
+          if (output > drivePID.outputMax) {
+            x_Drive.move(drivePID.outputMax, 0);
+          } else if (output < -drivePID.outputMax) {
+            x_Drive.move(-drivePID.outputMax, 0);
           } else {
             x_Drive.move(output, 0);
           }
         });
     x_Drive.recalibrateEncoderPosition();
     addRequirements(x_Drive);
-    getController().setTolerance(0.2);
+    getController().setTolerance(10);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }
