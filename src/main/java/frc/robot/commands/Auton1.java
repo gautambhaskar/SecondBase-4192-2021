@@ -20,6 +20,6 @@ public class Auton1 extends SequentialCommandGroup {
   public Auton1(Drivetrain x_Drive) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new DriveSetDistance(x_Drive, 60), new TurnSetDegree(x_Drive, 180), new DriveSetDistance(x_Drive, 60));
+    super(new DriveSetDistance(x_Drive, 200), new TurnSetDegree(x_Drive, 180), new DriveSetDistance(x_Drive, 200));
   }
 }
