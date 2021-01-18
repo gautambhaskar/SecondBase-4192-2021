@@ -37,17 +37,17 @@ public final class Constants {
     public static int leftLead = 1;
     public static int leftFollower1 = 2;
     public static int leftFollower2 = 3;
-    public static int rightLead = 4;
-    public static int rightFollower1 = 5;
-    public static int rightFollower2 = 6;
+    public static int rightLead = 5;
+    public static int rightFollower1 = 6;
+    public static int rightFollower2 = 7;
 
-    public static double encoderRotationsPer360DegreeRotation = 0;
+    public static double encoderRotationsPer360DegreeRotation = 40;
 
     public static class drivePID {
         public static double kP = 0.05;
         public static double kI = 0;
         public static double kD = 0;
-        public static double outputMax = 0.8;
+        public static double outputMax = 0.5;
     }
 
 }

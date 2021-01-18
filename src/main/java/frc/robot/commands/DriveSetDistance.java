@@ -27,7 +27,7 @@ public class DriveSetDistance extends PIDCommand {
         // This should return the measurement
         () -> x_Drive.getLeftEncoderPosition(),
         // This should return the setpoint (can also be a constant)
-        () -> distance,
+        () -> -distance,
         // This uses the output
         output -> {
           // Use the output here
@@ -41,7 +41,7 @@ public class DriveSetDistance extends PIDCommand {
         });
     x_Drive.recalibrateEncoderPosition();
     addRequirements(x_Drive);
-    getController().setTolerance(10);
+    getController().setTolerance(5);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }

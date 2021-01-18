@@ -25,13 +25,12 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax leftLead = new CANSparkMax(Constants.leftLead, MotorType.kBrushless);
   private final CANSparkMax rightLead = new CANSparkMax(Constants.rightLead, MotorType.kBrushless);
   private final CANSparkMax leftFollower1 = new CANSparkMax(Constants.leftFollower1, MotorType.kBrushless);
-  private final CANSparkMax leftFollower2 = new CANSparkMax(Constants.leftFollower2, MotorType.kBrushless);
+  //private final CANSparkMax leftFollower2 = new CANSparkMax(Constants.leftFollower2, MotorType.kBrushless);
   private final CANSparkMax rightFollower1 = new CANSparkMax(Constants.rightFollower1, MotorType.kBrushless);
-  private final CANSparkMax rightFollower2 = new CANSparkMax(Constants.rightFollower2, MotorType.kBrushless);
+  //private final CANSparkMax rightFollower2 = new CANSparkMax(Constants.rightFollower2, MotorType.kBrushless);
 
-  private final SpeedControllerGroup m_leftMotors = new SpeedControllerGroup(leftLead, leftFollower1, leftFollower2);
-  private final SpeedControllerGroup m_rightMotors = new SpeedControllerGroup(rightLead, rightFollower1,
-      rightFollower2);
+  private final SpeedControllerGroup m_leftMotors = new SpeedControllerGroup(leftLead, leftFollower1);
+  private final SpeedControllerGroup m_rightMotors = new SpeedControllerGroup(rightLead, rightFollower1);
 
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
@@ -40,6 +39,10 @@ public class Drivetrain extends SubsystemBase {
   private NetworkTableEntry telem_leftEncoder, telem_rightEncoder;
 
   public Drivetrain() {
+    leftLead.setInverted(true);
+    rightLead.setInverted(true);
+    leftFollower1.setInverted(true);
+    rightFollower1.setInverted(true);
     init_position = leftLead.getEncoder().getPosition();
     dataTab = Shuffleboard.getTab("Data Tab");
     telem_leftEncoder = dataTab.add("Drivetrain Left Encoder", 0).getEntry();
@@ -52,7 +55,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Drivetrain Encoder Telemetry Updates
     telem_leftEncoder.setDouble(leftLead.getEncoder().getPosition() - init_position);
-    telem_rightEncoder.setDouble(rightLead.getEncoder().getPosition() - init_position);
+    telem_rightEncoder.setDouble(rightLead.getEncoder().getPosition() - right_init_position);
   }
 
   public void move(double forward, double turn) {
@@ -60,11 +63,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftEncoderPosition() {
-    return leftLead.getEncoder().getPosition() - init_position;
+    return (leftLead.getEncoder().getPosition() - init_position);
   }
 
   public double getRightEncoderPosition() {
-    return rightLead.getEncoder().getPosition() - right_init_position;
+    return (rightLead.getEncoder().getPosition() - right_init_position);
   }
 
   public void recalibrateEncoderPosition() {
