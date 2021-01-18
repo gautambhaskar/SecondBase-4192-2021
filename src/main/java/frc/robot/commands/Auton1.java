@@ -20,7 +20,7 @@ public class Auton1 extends SequentialCommandGroup {
   public Auton1(Drivetrain x_Drive) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new ResetGyro(x_Drive), new TurnSetDegree(x_Drive, 90));
+    super(new resetGyro(x_Drive), new TurnSetDegree(x_Drive, 90));
     x_Drive.recalibrateGyroPosition();
   }
 }

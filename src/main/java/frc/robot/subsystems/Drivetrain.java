@@ -53,7 +53,7 @@ public class Drivetrain extends SubsystemBase {
     telem_rightEncoder = dataTab.add("Drivetrain Right Encoder", 0).getEntry();
     navX = new AHRS(SPI.Port.kMXP);
     navX.zeroYaw();
-    telem_gyro = dataTab.add("Gyro angle", navX.getYaw()).getEntry();
+    telem_gyro = dataTab.add("Gyro angle", -navX.getYaw()).getEntry();
   }
 
   @Override
