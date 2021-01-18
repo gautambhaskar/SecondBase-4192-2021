@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Auton1;
 import frc.robot.commands.BasicDrive;
+import frc.robot.commands.BobsAuton;
 import frc.robot.commands.DriveBack;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.HalfSpeedDrive;
@@ -41,8 +42,9 @@ public class RobotContainer {
   private final DriveBack back = new DriveBack(m_drive, 0.3);
   private final TurnRight trnDrive = new TurnRight(m_drive, 0.5);
   private final DriveForward forwardDrive = new DriveForward(m_drive, 0.8);
-  private final Auton1 BobsAuton = new Auton1(m_drive);
+  private final Auton1 Auton1 = new Auton1(m_drive);
   private final HalfSpeedDrive JeffsDrive;
+  private final BobsAuton BobsAuton = new BobsAuton(m_drive);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -84,5 +86,6 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
 
     return BobsAuton;
+
   }
 }

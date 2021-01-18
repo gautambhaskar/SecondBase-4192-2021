@@ -7,13 +7,18 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase {
   /**
@@ -27,21 +32,32 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax rightFollower2 = new CANSparkMax(Constants.rightFollower2, MotorType.kBrushless);
 
   private final SpeedControllerGroup m_leftMotors = new SpeedControllerGroup(leftLead, leftFollower1, leftFollower2);
-  private final SpeedControllerGroup m_rightMotors = new SpeedControllerGroup(rightLead, rightFollower1,
-      rightFollower2);
+  private final SpeedControllerGroup m_rightMotors = new SpeedControllerGroup(rightLead, rightFollower1,rightFollower2);
 
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
-  private double init_position, right_init_position;
+  private double init_position, right_init_position, init_angle;
+  private ShuffleboardTab dataTab;
+  private NetworkTableEntry telem_leftEncoder, telem_rightEncoder;
+  private AHRS navX;
 
   public Drivetrain() {
     init_position = leftLead.getEncoder().getPosition();
-
+    dataTab = Shuffleboard.getTab("Data Tab");
+    telem_leftEncoder = dataTab.add("Drivetrain Left Encoder", 0).getEntry();
+    telem_rightEncoder = dataTab.add("Drivetrain Right Encoder", 0).getEntry();
+    
+    navX = new AHRS(SPI.Port.kMXP);
+    init_angle = navX.getAngle();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    // Drivetrain Encoder Telemetry Updates
+    telem_leftEncoder.setDouble(leftLead.getEncoder().getPosition() - init_position);
+    telem_rightEncoder.setDouble(rightLead.getEncoder().getPosition() - init_position);
   }
 
   public void move(double forward, double turn) {
@@ -61,4 +77,13 @@ public class Drivetrain extends SubsystemBase {
     right_init_position = rightLead.getEncoder().getPosition();
   }
 
+  public void recalibrateGyroPosition() {
+    init_angle = navX.getAngle();
+  }
+
+  public double getGyroValue(){
+    return navX.getAngle() - init_angle;
+  }
+
 }
+
