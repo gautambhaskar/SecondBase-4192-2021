@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase {
@@ -38,7 +39,7 @@ public class Drivetrain extends SubsystemBase {
 
   private double init_position, right_init_position, init_angle;
   private ShuffleboardTab dataTab;
-  private NetworkTableEntry telem_leftEncoder, telem_rightEncoder;
+  private NetworkTableEntry telem_leftEncoder, telem_rightEncoder, telem_gyro;
   private AHRS navX;
 
   public Drivetrain() {
@@ -50,9 +51,9 @@ public class Drivetrain extends SubsystemBase {
     dataTab = Shuffleboard.getTab("Data Tab");
     telem_leftEncoder = dataTab.add("Drivetrain Left Encoder", 0).getEntry();
     telem_rightEncoder = dataTab.add("Drivetrain Right Encoder", 0).getEntry();
-    
     navX = new AHRS(SPI.Port.kMXP);
-    init_angle = navX.getAngle();
+    navX.zeroYaw();
+    telem_gyro = dataTab.add("Gyro angle", navX.getYaw()).getEntry();
   }
 
   @Override
@@ -62,6 +63,7 @@ public class Drivetrain extends SubsystemBase {
     // Drivetrain Encoder Telemetry Updates
     telem_leftEncoder.setDouble(leftLead.getEncoder().getPosition() - init_position);
     telem_rightEncoder.setDouble(rightLead.getEncoder().getPosition() - right_init_position);
+    telem_gyro.setDouble(-navX.getYaw());
   }
 
   public void move(double forward, double turn) {
@@ -82,11 +84,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void recalibrateGyroPosition() {
-    init_angle = navX.getAngle();
+    navX.zeroYaw();
   }
 
   public double getGyroValue(){
-    return navX.getAngle() - init_angle;
+    return (-navX.getYaw());
   }
 
 }
