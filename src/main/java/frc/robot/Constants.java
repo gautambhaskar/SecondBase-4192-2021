@@ -44,10 +44,10 @@ public final class Constants {
     public static double encoderRotationsPer360DegreeRotation = 40;
 
     public static class drivePID {
-        public static double kP = 0.05;
+        public static double kP = 0.06;
         public static double kI = 0;
         public static double kD = 0;
         public static double outputMax = 0.5;
     }
-
+    public static double maxRotationSpeed = 0.4;
 }

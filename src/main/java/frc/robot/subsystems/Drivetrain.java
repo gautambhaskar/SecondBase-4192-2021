@@ -63,7 +63,7 @@ public class Drivetrain extends SubsystemBase {
     // Drivetrain Encoder Telemetry Updates
     telem_leftEncoder.setDouble(leftLead.getEncoder().getPosition() - init_position);
     telem_rightEncoder.setDouble(rightLead.getEncoder().getPosition() - right_init_position);
-    telem_gyro.setDouble(-navX.getYaw());
+    telem_gyro.setDouble(-navX.getAngle());
   }
 
   public void move(double forward, double turn) {
@@ -88,7 +88,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getGyroValue(){
-    return (-navX.getYaw());
+    return (-navX.getAngle());
   }
 
 }

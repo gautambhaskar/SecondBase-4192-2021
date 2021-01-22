@@ -22,19 +22,24 @@ public class TurnSetDegree extends PIDCommand {
   public TurnSetDegree(Drivetrain x_Drive, double degrees) {
     super(
         // The controller that the command will use
-        new PIDController(0.05, 0, 0),
+        new PIDController(0.06, 0, 0),
         // This should return the measurement
         () -> x_Drive.getGyroValue(), // might have to negate this expression
         // This should return the setpoint (can also be a constant)
         () -> degrees,
         // This uses the output
         output -> {
-          x_Drive.move(0, output);
+          if (output > Constants.maxRotationSpeed) {
+            x_Drive.move(0, Constants.maxRotationSpeed);
+          } else if (output < -Constants.maxRotationSpeed) {
+            x_Drive.move(0, -Constants.maxRotationSpeed);
+          } else {
+            x_Drive.move(0, output);
+          }
           // Use the output here
         });
     addRequirements(x_Drive);
-    getController().setTolerance(0.2);
-    x_Drive.recalibrateGyroPosition();
+    getController().setTolerance(2);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }
