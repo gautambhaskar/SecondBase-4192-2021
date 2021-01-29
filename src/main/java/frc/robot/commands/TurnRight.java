@@ -18,11 +18,11 @@ public class TurnRight extends CommandBase {
   private final Drivetrain m_drive;
   private final double turn;
 
-  public TurnRight(Drivetrain drivetrain, double trn ) {
+  public TurnRight(Drivetrain drivetrain, double trn) {
     // Use addRequirements() here to declare subsystem dependencies.
-     m_drive = drivetrain;
-     turn = trn;
-     addRequirements(m_drive);
+    m_drive = drivetrain;
+    turn = trn;
+    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
@@ -38,11 +38,10 @@ public class TurnRight extends CommandBase {
 
   }
 
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.move(0,0);
+    m_drive.move(0, 0);
   }
 
   // Returns true when the command should end.
