@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase {
@@ -28,16 +27,18 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax leftLead = new CANSparkMax(Constants.leftLead, MotorType.kBrushless);
   private final CANSparkMax rightLead = new CANSparkMax(Constants.rightLead, MotorType.kBrushless);
   private final CANSparkMax leftFollower1 = new CANSparkMax(Constants.leftFollower1, MotorType.kBrushless);
-  //private final CANSparkMax leftFollower2 = new CANSparkMax(Constants.leftFollower2, MotorType.kBrushless);
+  // private final CANSparkMax leftFollower2 = new
+  // CANSparkMax(Constants.leftFollower2, MotorType.kBrushless);
   private final CANSparkMax rightFollower1 = new CANSparkMax(Constants.rightFollower1, MotorType.kBrushless);
-  //private final CANSparkMax rightFollower2 = new CANSparkMax(Constants.rightFollower2, MotorType.kBrushless);
+  // private final CANSparkMax rightFollower2 = new
+  // CANSparkMax(Constants.rightFollower2, MotorType.kBrushless);
 
   private final SpeedControllerGroup m_leftMotors = new SpeedControllerGroup(leftLead, leftFollower1);
   private final SpeedControllerGroup m_rightMotors = new SpeedControllerGroup(rightLead, rightFollower1);
 
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
-  private double init_position, right_init_position, init_angle;
+  private double init_position, right_init_position;
   private ShuffleboardTab dataTab;
   private NetworkTableEntry telem_leftEncoder, telem_rightEncoder, telem_gyro;
   private AHRS navX;
@@ -87,7 +88,7 @@ public class Drivetrain extends SubsystemBase {
     navX.zeroYaw();
   }
 
-  public double getGyroValue(){
+  public double getGyroValue() {
     return (-navX.getAngle());
   }
 
