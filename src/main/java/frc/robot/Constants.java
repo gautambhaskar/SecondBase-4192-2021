@@ -48,6 +48,7 @@ public final class Constants {
         public static double kI = 0;
         public static double kD = 0;
         public static double outputMax = 0.5;
+        public static double turnkP = 0.05;
     }
     public static double maxRotationSpeed = 0.4;
 }

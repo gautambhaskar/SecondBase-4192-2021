@@ -12,12 +12,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Auton1;
 import frc.robot.commands.BasicDrive;
 import frc.robot.commands.DriveBack;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.HalfSpeedDrive;
 import frc.robot.commands.TurnRight;
+import frc.robot.commands.DriveStraightPlus;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -43,6 +45,7 @@ public class RobotContainer {
   private final DriveForward forwardDrive = new DriveForward(m_drive, 0.8);
   private final Auton1 BobsAuton = new Auton1(m_drive);
   private final HalfSpeedDrive JeffsDrive;
+  private final DriveStraightPlus straight;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -53,6 +56,8 @@ public class RobotContainer {
 
     JeffsDrive = new HalfSpeedDrive(m_drive, () -> dController.getY(Hand.kLeft), () -> dController.getX(Hand.kRight));
     // Configure the button bindings
+    straight = new DriveStraightPlus(m_drive, () -> dController.getY(Hand.kLeft));
+
     configureButtonBindings();
 
   }
@@ -67,12 +72,15 @@ public class RobotContainer {
   private JoystickButton turnButton = new JoystickButton(dController, Constants.rightBumper);
   private JoystickButton forwX = new JoystickButton(dController, Constants.xButton);
   private JoystickButton halfY = new JoystickButton(dController, Constants.yButton);
+  private Trigger leftStickYOnly = new Trigger(
+      () -> dController.getY(Hand.kLeft) > 0.1 && dController.getX(Hand.kRight) < 0.1);
 
   private void configureButtonBindings() {
     driverA.whenHeld(back);
     turnButton.whenHeld(trnDrive);
     forwX.whenHeld(forwardDrive);
     halfY.toggleWhenPressed(JeffsDrive);
+    leftStickYOnly.whenActive(straight);
   }
 
   /**
