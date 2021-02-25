@@ -18,8 +18,11 @@ import frc.robot.commands.BasicDrive;
 import frc.robot.commands.DriveBack;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.HalfSpeedDrive;
+import frc.robot.commands.LiftRobot;
+import frc.robot.commands.LowerRobot;
 import frc.robot.commands.TurnRight;
 import frc.robot.commands.DriveStraightPlus;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -34,6 +37,7 @@ public class RobotContainer {
 
   // Subsystems
   private final Drivetrain m_drive = new Drivetrain();
+  private final Climb m_climb = new Climb();
 
   // Controllers
   private XboxController dController = new XboxController(Constants.driverController);
@@ -46,6 +50,8 @@ public class RobotContainer {
   private final Auton1 BobsAuton = new Auton1(m_drive);
   private final HalfSpeedDrive JeffsDrive;
   private final DriveStraightPlus straight;
+  private final LiftRobot lift = new LiftRobot(m_climb);
+  private final LowerRobot lower = new LowerRobot(m_climb);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -72,6 +78,8 @@ public class RobotContainer {
   private JoystickButton turnButton = new JoystickButton(dController, Constants.rightBumper);
   private JoystickButton forwX = new JoystickButton(dController, Constants.xButton);
   private JoystickButton halfY = new JoystickButton(dController, Constants.yButton);
+  private JoystickButton liftButton = new JoystickButton(dController, Constants.rightBumper);
+  private JoystickButton lowerButton = new JoystickButton(dController, Constants.leftBumper);
   private Trigger leftStickYOnly = new Trigger(
       () -> dController.getY(Hand.kLeft) > 0.1 && dController.getX(Hand.kRight) < 0.1);
 
@@ -81,6 +89,8 @@ public class RobotContainer {
     forwX.whenHeld(forwardDrive);
     halfY.toggleWhenPressed(JeffsDrive);
     leftStickYOnly.whenActive(straight);
+    liftButton.whenHeld(lift);
+    lowerButton.whenHeld(lower);
   }
 
   /**
