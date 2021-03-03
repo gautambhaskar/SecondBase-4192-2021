@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climb extends SubsystemBase {
   private final DoubleSolenoid climbSolenoid = new DoubleSolenoid(16, 0, 1);
+
   public final DoubleSolenoid.Value lowerRobot = DoubleSolenoid.Value.kForward;
   public final DoubleSolenoid.Value liftRobot = DoubleSolenoid.Value.kReverse;
 
@@ -30,5 +31,4 @@ public class Climb extends SubsystemBase {
   public void lowerRobot() {
     climbSolenoid.set(lowerRobot);
   }
-
 }
